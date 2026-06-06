@@ -31,6 +31,12 @@ const EVENT_LABELS: Record<ThreatEventType, string> = {
   ACCOUNT_LOCKOUT: 'Account Lockout Risk',
   PHISHING_CAMPAIGN_DETECTED: 'Phishing Campaign',
   UNAUTHORIZED_ACCESS_ATTEMPT: 'Unauthorized Access',
+  NEW_DEVICE_LOGIN: 'New Device Login',
+  NEW_LOCATION_LOGIN: 'New Location Login',
+  PASSWORD_RESET_ATTEMPT: 'Password Reset Attempt',
+  MULTIPLE_LOGIN_ATTEMPTS: 'Multiple Login Attempts',
+  HIGH_RISK_PHISHING_SCAN: 'High Risk Phishing Scan',
+  SUSPICIOUS_USER_ACTIVITY: 'Suspicious User Activity',
 };
 
 // ─── Helper ───────────────────────────────────────────────────────────────────
@@ -260,7 +266,7 @@ export const ThreatMonitor: React.FC = () => {
             const maxCount = Math.max(...Object.values(eventCounts), 1);
             const pct = (count / maxCount) * 100;
             return (
-              <div key={key} style={{ flex: '1 1 160px', minWidth: '140px' }}
+              <div key={key}
                 onClick={() => setFilterEvent(filterEvent === key as ThreatEventType ? 'All' : key as ThreatEventType)}
                 className="card"
                 style={{

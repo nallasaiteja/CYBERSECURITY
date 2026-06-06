@@ -25,7 +25,6 @@ import {
   Clock,
   Eye,
   Activity,
-  FileText,
   UserCheck
 } from 'lucide-react';
 import { supabase } from '../supabaseClient';
@@ -33,7 +32,6 @@ import { useAuth } from '../contexts/AuthContext';
 import { checkPhishingRiskAlert, checkRepeatedSuspiciousActivity } from '../alertService';
 import { 
   onFailedLogin, 
-  onSuccessfulLogin, 
   onNewDeviceLogin, 
   onNewLocationLogin, 
   onPasswordResetAttempt, 
@@ -45,14 +43,7 @@ import {
 type ScanResult = 'Clean' | 'Suspicious' | 'Malicious';
 type ScanMode = 'URL' | 'Email' | 'SMS';
 
-interface ThreatAlert {
-  id: string;
-  title: string;
-  severity: 'Low' | 'Medium' | 'High' | 'Critical';
-  source_ip: string;
-  status: 'Active' | 'Investigating' | 'Resolved';
-  created_at: string;
-}
+
 
 interface PhishingScan {
   id: string;
@@ -85,18 +76,7 @@ interface ThreatLogEntry {
   created_at: string;
 }
 
-interface AlertEntry {
-  id: string;
-  alert_type: string;
-  severity: 'Low' | 'Medium' | 'High' | 'Critical';
-  title: string;
-  message: string;
-  user_email?: string;
-  trigger_value?: number;
-  trigger_threshold?: number;
-  is_read: boolean;
-  created_at: string;
-}
+
 
 interface DetectionSignal {
   id: string;
@@ -259,7 +239,7 @@ const runSMSAnalysis = (text: string): AIAnalysisReport => {
   return buildReport('SMS', '[SMS Content]', riskScore, signals);
 };
 
-const buildReport = (mode: ScanMode, input: string, riskScore: number, signals: DetectionSignal[]): AIAnalysisReport => {
+const buildReport = (_mode: ScanMode, _input: string, riskScore: number, signals: DetectionSignal[]): AIAnalysisReport => {
   let verdict: ScanResult = 'Clean';
   let confidence = 85;
 
@@ -304,9 +284,6 @@ export const Dashboard: React.FC = () => {
   const [scans, setScans] = useState<PhishingScan[]>([]);
   const [threatLogs, setThreatLogs] = useState<ThreatLogEntry[]>([]);
   const [failedLogins, setFailedLogins] = useState<FailedLogin[]>([]);
-
-  // Simulation
-  const [simMessage, setSimMessage] = useState<string | null>(null);
 
   const fetchDashboardData = useCallback(async () => {
     try {
@@ -366,33 +343,7 @@ export const Dashboard: React.FC = () => {
     };
   }, [fetchDashboardData, role]);
 
-  // Handle simulations
-  const triggerSimulation = async (type: 'failed_login' | 'new_device' | 'new_location' | 'reset' | 'suspicious') => {
-    if (!user?.email) return;
-    setSimMessage(null);
-    try {
-      if (type === 'failed_login') {
-        await onFailedLogin(user.email, '198.51.100.99');
-        setSimMessage('Failed login attempt logged successfully.');
-      } else if (type === 'new_device') {
-        await onNewDeviceLogin(user.email, 'iPhone 17 Pro Max', '198.51.100.102');
-        setSimMessage('New device login alert generated.');
-      } else if (type === 'new_location') {
-        await onNewLocationLogin(user.email, 'London, United Kingdom', '85.22.40.119');
-        setSimMessage('New location login alert logged.');
-      } else if (type === 'reset') {
-        await onPasswordResetAttempt(user.email, '198.51.100.99');
-        setSimMessage('Password reset attempt threat event recorded.');
-      } else if (type === 'suspicious') {
-        await onSuspiciousActivity(user.email, 'Multiple fast API requests detected', '198.51.100.99');
-        setSimMessage('Suspicious user activity event logged.');
-      }
-      setTimeout(() => setSimMessage(null), 3000);
-      fetchDashboardData();
-    } catch (e: any) {
-      alert(`Simulation failed: ${e.message}`);
-    }
-  };
+
 
   // Render correct dashboard component
   if (role === 'Admin') {
