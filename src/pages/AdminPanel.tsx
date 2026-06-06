@@ -436,7 +436,7 @@ export const AdminPanel: React.FC = () => {
               type="text"
               className="form-input"
               style={{ paddingLeft: '2.5rem', height: '38px' }}
-              placeholder={`Search in ${activeTab === 'operators' ? 'operators' : activeTab === 'scans' ? 'scans' : activeTab === 'threats' ? 'threat logs' : activeTab === 'alerts' ? 'alerts' : 'register'}...`}
+              placeholder={`Search in ${activeTab === 'operators' ? 'operators' : activeTab === 'scans' ? 'scans' : activeTab === 'threats' ? 'threat logs' : 'register'}...`}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -475,7 +475,7 @@ export const AdminPanel: React.FC = () => {
             </div>
           )}
 
-          {(activeTab === 'threats' || activeTab === 'alerts') && (
+          {activeTab === 'threats' && (
             <div style={{ display: 'flex', gap: '0.5rem' }}>
               <select className="form-input" style={{ width: '150px', height: '38px', padding: '0 0.5rem 0 1rem' }} value={filterSeverity} onChange={(e) => setFilterSeverity(e.target.value as any)}>
                 <option value="All">All Severities</option>
@@ -921,13 +921,6 @@ export const AdminPanel: React.FC = () => {
                     count: threatLogs.length,
                     data: threatLogs,
                     filename: 'cybershield_threat_incidents_ledger'
-                  },
-                  {
-                    title: 'Security Engine Alerts',
-                    description: 'Real-time alert notifications generated from user behavior thresholds and risk indexes.',
-                    count: alerts.length,
-                    data: alerts,
-                    filename: 'cybershield_system_alerts_feed'
                   },
                   {
                     title: 'Threat Alerts Register',

@@ -16,13 +16,7 @@ import {
 } from 'lucide-react';
 import { supabase } from '../supabaseClient';
 import { useAuth } from '../contexts/AuthContext';
-import { 
-  onFailedLogin, 
-  onNewDeviceLogin, 
-  onNewLocationLogin, 
-  onPasswordResetAttempt, 
-  onSuspiciousActivity 
-} from '../threatService';
+import { onPhishingScan } from '../threatService';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -413,19 +407,14 @@ const UserSecurityDashboard: React.FC<UserDashboardProps> = ({
 
         setScanStatus('success');
 
-        // Check if alert needs to trigger
-        await checkPhishingRiskAlert({
+        // Log phishing scan result to threat monitoring
+        await onPhishingScan({
           targetUrl: input,
-          confidenceScore: report.confidence,
           result: report.verdict,
+          confidence: report.confidence,
           scanType: scanMode,
-          userEmail: user?.email,
-          userId: user?.id
+          userEmail: user?.email
         });
-
-        if (report.verdict !== 'Clean') {
-          await checkRepeatedSuspiciousActivity(user.email, user.id);
-        }
       } catch (err) {
         console.error(err);
         setScanStatus('error');
