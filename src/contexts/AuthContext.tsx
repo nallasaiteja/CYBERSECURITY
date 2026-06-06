@@ -20,7 +20,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [isSuspended, setIsSuspended] = useState<boolean>(false);
   const [loading, setLoading] = useState(true);
 
-  const fetchProfileDetails = async (userId: string) => {
+  const fetchProfileDetails = async (userId: string): Promise<{ role: 'Admin' | 'User'; is_suspended: boolean }> => {
     try {
       const { data, error } = await supabase
         .from('profiles')
@@ -30,7 +30,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       if (error) {
         console.error('Error fetching details from profile table:', error);
-        return { role: 'User', is_suspended: false };
+        return { role: 'User' as const, is_suspended: false };
       }
 
       if (data) {
@@ -40,10 +40,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         };
       }
 
-      return { role: 'User', is_suspended: false };
+      return { role: 'User' as const, is_suspended: false };
     } catch (err) {
       console.error('Error in fetchProfileDetails:', err);
-      return { role: 'User', is_suspended: false };
+      return { role: 'User' as const, is_suspended: false };
     }
   };
 
@@ -64,7 +64,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     });
 
     // 2. Listen for auth state changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, newSession) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, newSession) => {
       setSession(newSession);
       setUser(newSession?.user ?? null);
       

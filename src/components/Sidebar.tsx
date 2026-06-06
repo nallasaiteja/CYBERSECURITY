@@ -9,11 +9,9 @@ import {
   ChevronLeft, 
   ChevronRight,
   ShieldCheck,
-  ShieldAlert,
-  Bell
+  ShieldAlert
 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
-import { supabase } from '../supabaseClient';
 
 export const Sidebar: React.FC = () => {
   const { user, role, signOut } = useAuth();

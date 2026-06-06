@@ -106,7 +106,7 @@ export const App: React.FC = () => {
             </span>
             <button
               onClick={() => setEmailNotification(null)}
-              style={{ background: 'none', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer', fontSize: '1.2rem', padding: '0 4px', lineVerticalAlign: 'middle' }}
+              style={{ background: 'none', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer', fontSize: '1.2rem', padding: '0 4px', verticalAlign: 'middle' }}
             >
               ×
             </button>

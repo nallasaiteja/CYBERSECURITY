@@ -5,7 +5,6 @@ import {
   PlusCircle, 
   Trash2, 
   RefreshCw, 
-  ShieldAlert, 
   ShieldCheck,
   Users,
   CheckCircle2,
@@ -17,12 +16,10 @@ import {
   Mail,
   MessageSquare,
   Skull,
-  Info,
   Lock,
   Unlock,
   Activity,
   FileText,
-  Radio,
   FileSpreadsheet
 } from 'lucide-react';
 
@@ -56,19 +53,7 @@ interface ThreatLog {
   metadata?: any;
 }
 
-interface AlertEngineEntry {
-  id: string;
-  alert_type: string;
-  severity: 'Low' | 'Medium' | 'High' | 'Critical';
-  title: string;
-  message: string;
-  user_email?: string;
-  trigger_value?: number;
-  trigger_threshold?: number;
-  is_read: boolean;
-  is_dismissed: boolean;
-  created_at: string;
-}
+
 
 interface ThreatAlert {
   id: string;
