@@ -1,35 +1,21 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import {
   AlertTriangle,
-  Fingerprint,
-  Play,
   RefreshCw,
   Radio,
   Users,
-  CheckCircle,
-  Skull,
   Globe,
   Ban,
   TrendingUp,
   BarChart3,
-  CalendarDays,
-  Link2,
   Mail,
   MessageSquare,
   ShieldAlert,
-  Lightbulb,
-  ListChecks,
-  Info,
-  Smartphone,
-  MapPin,
-  Clock,
-  Eye,
   Activity,
   UserCheck
 } from 'lucide-react';
 import { supabase } from '../supabaseClient';
 import { useAuth } from '../contexts/AuthContext';
-import { checkPhishingRiskAlert, checkRepeatedSuspiciousActivity } from '../alertService';
 import { 
   onFailedLogin, 
   onNewDeviceLogin, 
